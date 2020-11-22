@@ -1,2 +1,2 @@
-# food_detector
+# Food detector
 Food detector for 32 classes
