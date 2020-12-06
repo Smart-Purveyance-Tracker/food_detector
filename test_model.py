@@ -4,7 +4,8 @@ import numpy as np
 from cv2 import cv2
 
 from modules.model.create_model import YoloModel
-from modules.utils import parse_model_config, draw_image_with_bboxes
+from modules.utils import (parse_model_config, draw_image_with_bboxes,
+                           change_idx_to_class_names, read_class_names_mapping)
 
 
 def read_image(image_path: str) -> np.ndarray:
@@ -51,8 +52,11 @@ if __name__ == '__main__':
         augment=model_config_dict['augment']
     )
 
+    class_names = read_class_names_mapping(class_names_path=model_config_dict['class_names_path'])
+
     image = read_image(image_path=image_path)
 
     res = model.predict(image=image)
+    res = change_idx_to_class_names(bboxes_list=res, class_names=class_names)
 
     draw_image_with_bboxes(image=image, bboxes_list=res)

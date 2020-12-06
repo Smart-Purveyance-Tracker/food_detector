@@ -4,7 +4,7 @@ from typing import Dict, List, Union
 
 from flask import g, current_app
 from modules.model.create_model import YoloModel
-from modules.utils import class_names_mapping
+from modules.utils import read_class_names_mapping
 
 
 def create_model(model_config_dict: Dict[str, Union[str, float, int, bool]]) -> YoloModel:
@@ -36,7 +36,7 @@ def create_class_names_list(model_config_dict: Dict[str, Union[str, float, int, 
     """
     class_names_path = model_config_dict['class_names_path']
 
-    class_names_list = class_names_mapping(class_names_path=class_names_path)
+    class_names_list = read_class_names_mapping(class_names_path=class_names_path)
 
     return class_names_list
 

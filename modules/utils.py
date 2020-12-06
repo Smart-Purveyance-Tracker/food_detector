@@ -55,13 +55,16 @@ def draw_image_with_bboxes(image: np.ndarray, bboxes_list: List[Dict[str, Union[
         image = cv2.rectangle(image, (x1, y1), (x2, y2), (36, 255, 12), 1)
         cv2.putText(image, text, (x1, y1 - 10), cv2.FONT_HERSHEY_COMPLEX, 0.4, (36, 255, 12), 1)
 
+    new_size = (image.shape[1] * 2, image.shape[0] * 2)
+    image = cv2.resize(image, new_size)
+
     cv2.imshow('Image', image)
 
     cv2.waitKey(0)
     cv2.destroyAllWindows()
 
 
-def class_names_mapping(class_names_path: str) -> List[str]:
+def read_class_names_mapping(class_names_path: str) -> List[str]:
     """
     Returns list with class names (indexes are mapped to names because of ordering)
 
