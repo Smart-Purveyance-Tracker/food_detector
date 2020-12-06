@@ -1,0 +1,1 @@
+docker build --tag food_detector:1.0 .

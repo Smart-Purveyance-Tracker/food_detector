@@ -122,3 +122,4 @@ news_feed/**/*.sql*
 
 /model_configs
 /model_weights
+/data
