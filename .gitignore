@@ -120,5 +120,5 @@ news_feed/**/*.sql*
 # mypy
 .mypy_cache/
 
-/configs
-/weights
+/model_configs
+/model_weights
