@@ -40,7 +40,7 @@ if __name__ == '__main__':
     image_path = args.image_path
     config_path = args.config_path
 
-    model_config_dict = parse_model_config(model_config_path=config_path)
+    model_config_dict = parse_model_config(config_path=config_path)
 
     model = YoloModel(
         model_path=model_config_dict['model_path'],

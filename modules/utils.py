@@ -7,9 +7,9 @@ import numpy as np
 from cv2 import cv2
 
 
-def parse_model_config(model_config_path: str) -> Dict[str, Union[str, float, int, bool]]:
+def parse_model_config(config_path: str) -> Dict[str, Union[str, float, int, bool]]:
     config = configparser.ConfigParser()
-    config.read(filenames=model_config_path)
+    config.read(filenames=config_path)
 
     model_path = config['Model']['model_path']
     model_config_path = config['Model']['model_config_path']
