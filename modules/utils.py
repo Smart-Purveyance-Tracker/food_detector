@@ -13,6 +13,7 @@ def parse_model_config(config_path: str) -> Dict[str, Union[str, float, int, boo
 
     model_path = config['Model']['model_path']
     model_config_path = config['Model']['model_config_path']
+    class_names_path = config['Model']['class_names_path']
 
     image_size = config.getfloat('Model', 'image_size')
     conf_thresh = config.getfloat('Model', 'conf_thresh')
@@ -22,6 +23,7 @@ def parse_model_config(config_path: str) -> Dict[str, Union[str, float, int, boo
     result = {
         'model_path': model_path,
         'model_config_path': model_config_path,
+        'class_names_path': class_names_path,
 
         'image_size': image_size,
         'conf_thresh': conf_thresh,
@@ -57,5 +59,38 @@ def draw_image_with_bboxes(image: np.ndarray, bboxes_list: List[Dict[str, Union[
 
     cv2.waitKey(0)
     cv2.destroyAllWindows()
+
+
+def class_names_mapping(class_names_path: str) -> List[str]:
+    """
+    Returns list with class names (indexes are mapped to names because of ordering)
+
+    :param class_names_path: path to class names
+    :return: list of class names
+    """
+
+    with open(class_names_path, mode='r') as file:
+        lines = file.readlines()
+        lines = list(map(lambda x: x.strip(), lines))
+
+    return lines
+
+
+def change_idx_to_class_names(bboxes_list: List[Dict[str, Union[List[float], float]]],
+                              class_names: List[str]) -> List[Dict[str, Union[List[float], float, str]]]:
+    """
+    Changes prediction integer labels to text labels
+
+    :param bboxes_list: list of bboxes to draw
+    :param class_names: list with class names
+    :return: list of bboxes to draw with text label
+    """
+
+    for curr_bbox_dict in bboxes_list:
+        cls = int(curr_bbox_dict['cls'])
+
+        curr_bbox_dict['cls'] = class_names[cls]
+
+    return bboxes_list
 
 

@@ -3,11 +3,11 @@
 
 import numpy as np
 from cv2 import cv2
-from PIL import Image
-from flask import Blueprint, g, request, jsonify, current_app
+from flask import Blueprint, request, jsonify, current_app
 
 from modules.model.create_model import YoloModel
-from modules.api.model_access import get_model
+from modules.utils import change_idx_to_class_names
+from modules.api.access_methods import get_model, get_class_names
 
 
 blueprint = Blueprint('food_api', __name__)
@@ -23,10 +23,10 @@ def process_image():
 
     with current_app.app_context():
         model: YoloModel = get_model()
+        class_names_list = get_class_names()
 
     prediction = model.predict(image=image)
-
-    print(f'Prediction: {prediction}')
+    prediction = change_idx_to_class_names(bboxes_list=prediction, class_names=class_names_list)
 
     return jsonify(prediction)
 
