@@ -34,12 +34,15 @@ def parse_model_config(config_path: str) -> Dict[str, Union[str, float, int, boo
     return result
 
 
-def draw_image_with_bboxes(image: np.ndarray, bboxes_list: List[Dict[str, Union[List[float], float]]]):
+def draw_image_with_bboxes(image: np.ndarray,
+                           bboxes_list: List[Dict[str, Union[List[float], float]]],
+                           upsale: bool = False):
     """
     Draw image with bboxes and shows it.
 
     :param image: image to draw
     :param bboxes_list: list of bboxes to draw
+    :param upsale: if True makes image 2 time bigger
     """
 
     for curr_bbox_dict in bboxes_list:
@@ -55,8 +58,9 @@ def draw_image_with_bboxes(image: np.ndarray, bboxes_list: List[Dict[str, Union[
         image = cv2.rectangle(image, (x1, y1), (x2, y2), (36, 255, 12), 1)
         cv2.putText(image, text, (x1, y1 - 10), cv2.FONT_HERSHEY_COMPLEX, 0.4, (36, 255, 12), 1)
 
-    new_size = (image.shape[1] * 2, image.shape[0] * 2)
-    image = cv2.resize(image, new_size)
+    if upsale:
+        new_size = (image.shape[1] * 2, image.shape[0] * 2)
+        image = cv2.resize(image, new_size)
 
     cv2.imshow('Image', image)
 
