@@ -9,6 +9,12 @@ To download project:
 git clone https://github.com/Smart-Purveyance-Tracker/food_detector.git
 ```
 
+To download model weights and configs:
+
+```
+bash deploy/download_model_data.sh
+```
+
 ## Installation
 
 ### Using local environment
