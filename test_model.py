@@ -4,7 +4,7 @@ import numpy as np
 from cv2 import cv2
 
 from modules.model.create_model import YoloModel
-from modules.utils import (parse_model_config, draw_image_with_bboxes,
+from modules.utils import (get_model_config, draw_image_with_bboxes,
                            change_idx_to_class_names, read_class_names_mapping)
 
 
@@ -26,22 +26,19 @@ if __name__ == '__main__':
     Example:
     
     >> python3 test_model.py \
-    >>     --image-path /home/vadbeg/Data/Docker_mounts/food/_108997168_766685d49e_o.jpg \
-    >>     --config-path config.ini
+    >>     --image-path /home/vadbeg/Data/Docker_mounts/food/_108997168_766685d49e_o.jpg
     
     """
 
-    parser = argparse.ArgumentParser(description='Executes model on give image')
+    parser = argparse.ArgumentParser(description='Executes model on given image')
 
     parser.add_argument('--image-path', help='Path to the image', type=str)
-    parser.add_argument('--config-path', help='Path to the config', type=str)
 
     args = parser.parse_args()
 
     image_path = args.image_path
-    config_path = args.config_path
 
-    model_config_dict = parse_model_config(config_path=config_path)
+    model_config_dict = get_model_config()
 
     model = YoloModel(
         model_path=model_config_dict['model_path'],

@@ -1,24 +1,29 @@
 """Module with utils for whole project"""
 
-import configparser
-from typing import Dict, Union, List
+from typing import Dict, Union, List, Tuple
 
+import environ
 import numpy as np
 from cv2 import cv2
 
 
-def parse_model_config(config_path: str) -> Dict[str, Union[str, float, int, bool]]:
-    config = configparser.ConfigParser()
-    config.read(filenames=config_path)
+def get_model_config() -> Dict[str, Union[str, float, int, bool]]:
+    """
+    Reads model config from environmental vas
 
-    model_path = config['Model']['model_path']
-    model_config_path = config['Model']['model_config_path']
-    class_names_path = config['Model']['class_names_path']
+    :return: dictionary with config
+    """
 
-    image_size = config.getfloat('Model', 'image_size')
-    conf_thresh = config.getfloat('Model', 'conf_thresh')
-    iou_thresh = config.getfloat('Model', 'iou_thresh')
-    augment = config.getboolean('Model', 'augment')
+    env = environ.Env()
+
+    model_path = env.str('MODEL_PATH')
+    model_config_path = env.str('MODEL_CONFIG_PATH')
+    class_names_path = env.str('CLASS_NAMES_PATH')
+
+    image_size = env.int('IMAGE_SIZE', default=640)
+    conf_thresh = env.float('CONF_THRESH', default=0.3)
+    iou_thresh = env.float('IOU_THRESH', default=0.6)
+    augment = env.bool('AUGMENT', default=True)
 
     result = {
         'model_path': model_path,
@@ -32,6 +37,21 @@ def parse_model_config(config_path: str) -> Dict[str, Union[str, float, int, boo
     }
 
     return result
+
+
+def get_api_host_port() -> Tuple[str, int]:
+    """
+    Reads HOST, PORT environmental vas
+
+    :return: host, port
+    """
+
+    env = environ.Env()
+
+    host = env.str('HOST', default='0.0.0.0')
+    port = env.int('PORT', default=9000)
+
+    return host, port
 
 
 def draw_image_with_bboxes(image: np.ndarray,
